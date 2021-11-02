@@ -35,5 +35,8 @@ describe("Movie Details Page", () => {
             });
           });
       });
+    it("should display the posters on the left", () => {
+      cy.get("img").should('be.visible').should("have.css", "left")
+    });
   });
 });
