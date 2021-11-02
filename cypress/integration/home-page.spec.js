@@ -109,3 +109,17 @@ describe("Home Page ", () => {
          });
        });
   });
+
+    describe("Checking avatar is displayed at top of movie card", () => {
+      it("should display an avatar when a movie is added to favourites", () =>{
+        cy.get("button[aria-label='add to favorites']").eq(0).click();
+        cy.get(".MuiAvatar-root").eq(0).should("be.visible");
+        cy.get(".MuiButtonBase-root").contains("Favorites").click();
+      });
+        it("should be added to favorites", () => {
+        
+        cy.get("button[aria-label='add to favorites']").eq(0).click();
+        cy.get(".MuiAvatar-root").eq(0).should("be.visible");
+      });
+
+  });
