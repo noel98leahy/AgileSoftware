@@ -7,6 +7,9 @@ const filterByTitle = (movieList, string) =>
 const filterByGenre = (movieList, genreId) =>
   movieList.filter((m) => m.genre_ids.includes(genreId));
 
+const filterByGenreAndTitle = (movieList, genreId, string) =>
+    movieList.filter((m) => m.genre_ids.includes(genreId) && m.title.toLowerCase().search(string) !== -1);
+
 describe("Home Page ", () => {
   before(() => {
     // Get movies from TMDB and store in movies variable.
@@ -77,6 +80,25 @@ describe("Home Page ", () => {
            cy.get('#filled-search').clear()
            cy.get("#genre-select").click();
            cy.get("li").contains(selectedGenreText).click();
+           cy.get(".MuiCardHeader-content").should(
+             "have.length",
+             matchingMovies.length
+           );
+           cy.get(".MuiCardHeader-content").each(($card, index) => {
+             cy.wrap($card).find("p").contains(matchingMovies[index].title);
+           });
+         });
+       });
+       describe("By movie genre and title", () => {
+        it("should display movies with the specified genre only and tilte containing m", () => {
+           let searchString = "m";
+           const selectedGenreId = 35;
+           const selectedGenreText = "Comedy";
+           const matchingMovies = filterByGenreAndTitle(movies, selectedGenreId,searchString );
+           cy.get('#filled-search').clear()
+           cy.get("#genre-select").click();
+           cy.get("li").contains(selectedGenreText).click();
+           cy.get('#filled-search').clear().type(searchString); // Enter m in tehxt box
            cy.get(".MuiCardHeader-content").should(
              "have.length",
              matchingMovies.length
